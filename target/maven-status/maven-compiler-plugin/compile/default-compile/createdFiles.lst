@@ -1,0 +1,6 @@
+org\supplier\infrastructure\entity\Supplier.class
+META-INF\panache-archive.marker
+org\supplier\domain\SupplierService.class
+org\supplier\GreetingResource.class
+org\supplier\interfaces\SupplierController.class
+org\supplier\infrastructure\SupplierRepository.class

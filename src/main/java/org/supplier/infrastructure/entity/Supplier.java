@@ -16,16 +16,16 @@ public class Supplier {
     @JsonProperty("name")
     private String name;
 
-    @Column(name = "start_date") // Nombre corregido en la base de datos (snake_case)
-    @JsonProperty("StartDate") // Nombre en JSON (StartDate)
-    private LocalDate startDate; // Nombre corregido en Java (camelCase)
+    @Column(name = "start_date") //
+    @JsonProperty("StartDate")
+    private LocalDate startDate;
 
     public Supplier() { }
 
-    public Supplier(Long id, String name, LocalDate startDate) { // Corregido el nombre del parámetro
+    public Supplier(Long id, String name, LocalDate startDate) {
         this.id = id;
         this.name = name;
-        this.startDate = startDate; // Corregido el nombre del campo
+        this.startDate = startDate;
     }
 
     public Long getId() {
@@ -45,10 +45,10 @@ public class Supplier {
     }
 
     public LocalDate getStartDate() {
-        return startDate; // Corregido el nombre del método
+        return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) { // Corregido el nombre del método
-        this.startDate = startDate; // Corregido el nombre del campo
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 }
