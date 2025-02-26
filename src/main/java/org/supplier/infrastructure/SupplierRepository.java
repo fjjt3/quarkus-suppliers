@@ -18,7 +18,10 @@ public class SupplierRepository implements PanacheRepository<Supplier> {
         return listAll();
     }
 
-    // Otros métodos si los necesitas...
+    public Supplier createSupplier(Supplier supplier) {
+        persist(supplier);
+        return supplier;
+    }
 }
 
 

@@ -1,16 +1,14 @@
 package org.supplier.interfaces;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.supplier.domain.SupplierService;
 import org.supplier.infrastructure.entity.Supplier;
 import org.supplier.interfaces.exception.SupplierNotFoundException;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,4 +31,12 @@ public class SupplierController {
         Optional<Supplier> supplierOptional = supplierService.getSupplierById(id);
         return supplierOptional.orElseThrow(() -> new SupplierNotFoundException("Supplier not found with id: " + id));
     }
+
+    @POST
+    public Response createSupplier(Supplier supplier) {
+        Supplier createdSupplier = supplierService.createSupplier(supplier);
+        return Response.created(URI.create("/suppliers/" + createdSupplier.getId())).entity(createdSupplier).build();
+    }
+
+
 }

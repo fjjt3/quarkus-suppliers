@@ -1,5 +1,6 @@
 package org.supplier.domain;
 
+import jakarta.transaction.Transactional;
 import org.supplier.infrastructure.SupplierRepository;
 import org.supplier.infrastructure.entity.Supplier;
 
@@ -23,5 +24,9 @@ public class SupplierService {
         return supplierRepository.getAllSuppliers();
     }
 
+    @Transactional
+    public Supplier createSupplier(Supplier supplier) {
+        return supplierRepository.createSupplier(supplier);
+    }
 
 }
