@@ -8,6 +8,7 @@ import org.supplier.infrastructure.SupplierRepository;
 import org.supplier.infrastructure.entity.Supplier;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,5 +43,22 @@ public class SupplierServiceTest {
 
         assertFalse(result.isPresent());
         verify(supplierRepository, times(1)).findSupplierById(2L);
+    }
+
+    @Test
+    public void testGetAllSuppliers() {
+        List<Supplier> suppliers = List.of(
+                new Supplier(1L, "Supplier A", LocalDate.of(2023, 1, 15)),
+                new Supplier(2L, "Supplier B", LocalDate.of(2023, 3, 20))
+        );
+        when(supplierRepository.getAllSuppliers()).thenReturn(suppliers);
+
+        List<Supplier> result = supplierService.getAllSuppliers();
+
+        assertEquals(2, result.size());
+        assertEquals("Supplier A", result.get(0).getName());
+        assertEquals("Supplier B", result.get(1).getName());
+
+        verify(supplierRepository, times(1)).getAllSuppliers();
     }
 }

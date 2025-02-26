@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.supplier.infrastructure.entity.Supplier;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,5 +54,13 @@ public class SupplierRepositoryTest {
         Optional<Supplier> retrievedSupplier = supplierRepository.findSupplierById(newSupplier.getId());
         assertTrue(retrievedSupplier.isPresent());
         assertEquals("Supplier C", retrievedSupplier.get().getName());
+    }
+
+    @Test
+    public void testGetAllSuppliers() {
+        List<Supplier> suppliers = supplierRepository.getAllSuppliers();
+        assertEquals(2, suppliers.size());
+        assertEquals(supplier1.getName(), suppliers.get(0).getName());
+        assertEquals(supplier2.getName(), suppliers.get(1).getName());
     }
 }

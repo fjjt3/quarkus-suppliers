@@ -11,6 +11,7 @@ import org.supplier.domain.SupplierService;
 import org.supplier.infrastructure.entity.Supplier;
 import org.supplier.interfaces.exception.SupplierNotFoundException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Path("/suppliers")
@@ -18,6 +19,12 @@ public class SupplierController {
 
     @Inject
     SupplierService supplierService;
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Supplier> getAllSuppliers() {
+        return supplierService.getAllSuppliers();
+    }
 
     @GET
     @Path("/{id}")
