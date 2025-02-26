@@ -6,8 +6,10 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.supplier.domain.SupplierService;
 import org.supplier.infrastructure.entity.Supplier;
+import org.supplier.interfaces.exception.SupplierNotFoundException;
 
 import java.util.Optional;
 
@@ -22,6 +24,6 @@ public class SupplierController {
     @Produces(MediaType.APPLICATION_JSON)
     public Supplier getSupplierById(@PathParam("id") Long id) {
         Optional<Supplier> supplierOptional = supplierService.getSupplierById(id);
-        return supplierOptional.orElseThrow(() -> new RuntimeException("Supplier not found"));
+        return supplierOptional.orElseThrow(() -> new SupplierNotFoundException("Supplier not found with id: " + id));
     }
 }
