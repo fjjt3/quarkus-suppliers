@@ -61,4 +61,17 @@ public class SupplierServiceTest {
 
         verify(supplierRepository, times(1)).getAllSuppliers();
     }
+
+    @Test
+    public void testCreateSupplier() {
+        Supplier newSupplier = new Supplier(null, "Supplier C", LocalDate.of(2023, 6, 1));
+        Supplier createdSupplier = new Supplier(3L, "Supplier C", LocalDate.of(2023, 6, 1)); // Mocked return
+
+        when(supplierRepository.createSupplier(newSupplier)).thenReturn(createdSupplier);
+
+        Supplier result = supplierService.createSupplier(newSupplier);
+
+        assertEquals(createdSupplier, result);
+        verify(supplierRepository, times(1)).createSupplier(newSupplier);
+    }
 }

@@ -63,4 +63,19 @@ public class SupplierRepositoryTest {
         assertEquals(supplier1.getName(), suppliers.get(0).getName());
         assertEquals(supplier2.getName(), suppliers.get(1).getName());
     }
+
+    @Test
+    @Transactional
+    public void testCreateSupplier() {
+        Supplier newSupplier = new Supplier(null, "Supplier C", LocalDate.of(2023, 6, 1));
+        Supplier createdSupplier = supplierRepository.createSupplier(newSupplier);
+
+        assertNotNull(createdSupplier.getId());
+        assertEquals("Supplier C", createdSupplier.getName());
+
+        Optional<Supplier> retrievedSupplier = supplierRepository.findSupplierById(createdSupplier.getId());
+        assertTrue(retrievedSupplier.isPresent());
+        assertEquals("Supplier C", retrievedSupplier.get().getName());
+    }
+
 }

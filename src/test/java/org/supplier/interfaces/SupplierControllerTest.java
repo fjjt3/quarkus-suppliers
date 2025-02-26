@@ -2,6 +2,7 @@ package org.supplier.interfaces;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.supplier.domain.SupplierService;
@@ -66,5 +67,25 @@ public class SupplierControllerTest {
                 .body("[1].name", is("Supplier B"));
 
         verify(supplierService, times(1)).getAllSuppliers();
+    }
+
+    @Test
+    public void testCreateSupplier() {
+        Supplier newSupplier = new Supplier(null, "Supplier C", LocalDate.of(2023, 6, 1));
+        Supplier createdSupplier = new Supplier(3L, "Supplier C", LocalDate.of(2023, 6, 1));
+
+        when(supplierService.createSupplier(any(Supplier.class))).thenReturn(createdSupplier);
+
+        RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(newSupplier)
+                .when().post("/suppliers")
+                .then()
+                .statusCode(201)
+                .header("Location", "/suppliers/3")
+                .body("id", is(3))
+                .body("name", is("Supplier C"));
+
+        verify(supplierService, times(1)).createSupplier(any(Supplier.class));
     }
 }
