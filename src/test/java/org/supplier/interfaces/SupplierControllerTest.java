@@ -10,6 +10,8 @@ import org.supplier.domain.SupplierService;
 import org.supplier.infrastructure.entity.Supplier;
 import org.supplier.testData.SupplierTestData;
 
+import java.time.LocalDate;
+
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 
@@ -102,5 +104,55 @@ public class SupplierControllerTest {
                 .statusCode(404);
 
         verify(supplierService, times(1)).deleteSupplierById(2L);
+    }
+
+    @Test
+    public void testUpdateSupplier_ExistingId() {
+        Supplier supplierToUpdate = SupplierTestData.supplier1();
+        supplierToUpdate.setName("Updated Supplier A");
+        supplierToUpdate.setStartDate(LocalDate.of(2024, 1, 15));
+
+        when(supplierService.updateSupplier(supplierToUpdate)).thenReturn(supplierToUpdate);
+
+        RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(supplierToUpdate)
+                .when().put("/suppliers/1")
+                .then()
+                .statusCode(200)
+                .body("id", is(1))
+                .body("name", is("Updated Supplier A"))
+                .body("startDate", is("2024-01-15"));
+
+        verify(supplierService, times(1)).updateSupplier(supplierToUpdate);
+    }
+
+    @Test
+    public void testUpdateSupplier_NonExistingId() {
+        Supplier nonExistentSupplier = new Supplier(999L, "Non Existent Supplier", LocalDate.of(2023, 1, 1));
+        when(supplierService.updateSupplier(nonExistentSupplier)).thenThrow(new RuntimeException("Supplier not found"));
+
+        RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(nonExistentSupplier)
+                .when().put("/suppliers/999")
+                .then()
+                .statusCode(404);
+
+        verify(supplierService, times(1)).updateSupplier(nonExistentSupplier);
+    }
+
+    @Test
+    public void testUpdateSupplier_IdMismatch() {
+        Supplier supplierToUpdate = SupplierTestData.supplier1();
+        supplierToUpdate.setName("Updated Supplier A");
+        supplierToUpdate.setStartDate(LocalDate.of(2024, 1, 15));
+
+        RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(supplierToUpdate)
+                .when().put("/suppliers/2") // ID mismatch
+                .then()
+                .statusCode(400);
     }
 }

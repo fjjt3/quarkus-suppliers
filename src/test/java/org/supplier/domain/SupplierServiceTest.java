@@ -9,6 +9,7 @@ import org.supplier.infrastructure.SupplierRepository;
 import org.supplier.infrastructure.entity.Supplier;
 import org.supplier.testData.SupplierTestData;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,5 +78,29 @@ public class SupplierServiceTest {
         boolean result = supplierService.deleteSupplierById(2L);
         assertFalse(result);
         verify(supplierRepository, times(1)).deleteSupplierById(2L);
+    }
+
+    @Test
+    public void testUpdateSupplier_ExistingId() {
+        Supplier supplierToUpdate = SupplierTestData.supplier1();
+        supplierToUpdate.setName("Updated Supplier A");
+        supplierToUpdate.setStartDate(LocalDate.of(2024, 1, 15));
+
+        when(supplierRepository.updateSupplier(supplierToUpdate)).thenReturn(supplierToUpdate);
+
+        Supplier updatedSupplier = supplierService.updateSupplier(supplierToUpdate);
+
+        assertEquals("Updated Supplier A", updatedSupplier.getName());
+        assertEquals(LocalDate.of(2024, 1, 15), updatedSupplier.getStartDate());
+        verify(supplierRepository, times(1)).updateSupplier(supplierToUpdate);
+    }
+
+    @Test
+    public void testUpdateSupplier_NonExistingId() {
+        Supplier nonExistentSupplier = new Supplier(999L, "Non Existent Supplier", LocalDate.of(2023, 1, 1));
+        when(supplierRepository.updateSupplier(nonExistentSupplier)).thenThrow(new RuntimeException("Supplier not found"));
+
+        assertThrows(RuntimeException.class, () -> supplierService.updateSupplier(nonExistentSupplier));
+        verify(supplierRepository, times(1)).updateSupplier(nonExistentSupplier);
     }
 }

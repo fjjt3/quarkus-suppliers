@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.supplier.infrastructure.entity.Supplier;
 import org.supplier.testData.SupplierTestData;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,5 +91,33 @@ public class SupplierRepositoryTest {
     public void testDeleteSupplierById_NonExistingId() {
         boolean deleted = supplierRepository.deleteSupplierById(3L);
         assertFalse(deleted);
+    }
+
+    @Test
+    @Transactional
+    public void testUpdateSupplier_ExistingId() {
+        Supplier supplierToUpdate = SupplierTestData.supplier1();
+        supplierToUpdate.setName("Updated Supplier A");
+        supplierToUpdate.setStartDate(LocalDate.of(2024, 1, 15));
+
+        Supplier updatedSupplier = supplierRepository.updateSupplier(supplierToUpdate);
+
+        assertEquals("Updated Supplier A", updatedSupplier.getName());
+        assertEquals(LocalDate.of(2024, 1, 15), updatedSupplier.getStartDate());
+
+        Optional<Supplier> retrievedSupplier = supplierRepository.findSupplierById(supplierToUpdate.getId());
+        assertTrue(retrievedSupplier.isPresent());
+        assertEquals("Updated Supplier A", retrievedSupplier.get().getName());
+        assertEquals(LocalDate.of(2024, 1, 15), retrievedSupplier.get().getStartDate());
+    }
+
+    @Test
+    @Transactional
+    public void testUpdateSupplier_NonExistingId() {
+        Supplier nonExistentSupplier = new Supplier(999L, "Non Existent Supplier", LocalDate.of(2023, 1, 1));
+
+        assertThrows(jakarta.persistence.PersistenceException.class, () -> {
+            supplierRepository.updateSupplier(nonExistentSupplier);
+        });
     }
 }
