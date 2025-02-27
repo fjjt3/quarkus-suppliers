@@ -26,6 +26,10 @@ public class SupplierRepository implements PanacheRepository<Supplier> {
     public boolean deleteSupplierById(Long id) {
         return deleteById(id);
     }
+
+    public Supplier updateSupplier(Supplier supplier) {
+        return getEntityManager().merge(supplier);
+    }
 }
 
 

@@ -49,5 +49,20 @@ public class SupplierController {
         }
     }
 
+    @PUT
+    @Path("/{id}")
+    public Response updateSupplier(@PathParam("id") Long id, Supplier supplier) {
+        if (supplier.getId() == null || !supplier.getId().equals(id)) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Supplier ID in path and body must match.").build();
+        }
+
+        try {
+            Supplier updatedSupplier = supplierService.updateSupplier(supplier);
+            return Response.ok(updatedSupplier).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Supplier not found with id: " + id).build();
+        }
+    }
+
 
 }

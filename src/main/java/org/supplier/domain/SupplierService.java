@@ -34,4 +34,8 @@ public class SupplierService {
         return supplierRepository.deleteSupplierById(id);
     }
 
+    @Transactional
+    public Supplier updateSupplier(Supplier supplier) {
+        return supplierRepository.updateSupplier(supplier);
+    }
 }
