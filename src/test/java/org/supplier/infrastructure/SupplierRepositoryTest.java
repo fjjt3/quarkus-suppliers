@@ -78,4 +78,21 @@ public class SupplierRepositoryTest {
         assertEquals("Supplier C", retrievedSupplier.get().getName());
     }
 
+    @Test
+    @Transactional
+    public void testDeleteSupplierById_ExistingId() {
+        boolean deleted = supplierRepository.deleteSupplierById(supplier1.getId());
+        assertTrue(deleted);
+
+        Optional<Supplier> retrievedSupplier = supplierRepository.findSupplierById(supplier1.getId());
+        assertFalse(retrievedSupplier.isPresent());
+    }
+
+    @Test
+    @Transactional
+    public void testDeleteSupplierById_NonExistingId() {
+        boolean deleted = supplierRepository.deleteSupplierById(3L);
+        assertFalse(deleted);
+    }
+
 }

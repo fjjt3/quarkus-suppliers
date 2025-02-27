@@ -22,6 +22,10 @@ public class SupplierRepository implements PanacheRepository<Supplier> {
         persist(supplier);
         return supplier;
     }
+
+    public boolean deleteSupplierById(Long id) {
+        return deleteById(id);
+    }
 }
 
 

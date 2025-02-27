@@ -38,5 +38,16 @@ public class SupplierController {
         return Response.created(URI.create("/suppliers/" + createdSupplier.getId())).entity(createdSupplier).build();
     }
 
+    @DELETE
+    @Path("/{id}")
+    public Response deleteSupplierById(@PathParam("id") Long id) {
+        boolean deleted = supplierService.deleteSupplierById(id);
+        if (deleted) {
+            return Response.noContent().build(); // 204 No Content
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build(); // 404 Not Found
+        }
+    }
+
 
 }

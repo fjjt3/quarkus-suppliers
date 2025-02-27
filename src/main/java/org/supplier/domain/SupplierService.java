@@ -29,4 +29,9 @@ public class SupplierService {
         return supplierRepository.createSupplier(supplier);
     }
 
+    @Transactional
+    public boolean deleteSupplierById(Long id) {
+        return supplierRepository.deleteSupplierById(id);
+    }
+
 }
