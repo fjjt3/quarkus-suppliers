@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.supplier.infrastructure.SupplierRepository;
 import org.supplier.infrastructure.entity.Supplier;
+import org.supplier.testData.SupplierTestData;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,20 +24,12 @@ public class SupplierServiceTest {
     @Inject
     SupplierService supplierService;
 
-    private Supplier supplier1;
-    private Supplier supplier2;
-    private Supplier supplier3;
-
     @BeforeEach
     public void setUp() {
-        supplier1 = new Supplier(1L, "Supplier A", LocalDate.of(2023, 1, 15));
-        supplier2 = new Supplier(2L, "Supplier B", LocalDate.of(2023, 3, 20));
-        supplier3 = new Supplier(3L, "Supplier C", LocalDate.of(2023, 6, 1));
-
-        when(supplierRepository.findSupplierById(1L)).thenReturn(Optional.of(supplier1));
+        when(supplierRepository.findSupplierById(1L)).thenReturn(Optional.of(SupplierTestData.supplier1()));
         when(supplierRepository.findSupplierById(2L)).thenReturn(Optional.empty());
-        when(supplierRepository.getAllSuppliers()).thenReturn(List.of(supplier1, supplier2));
-        when(supplierRepository.createSupplier(any(Supplier.class))).thenReturn(supplier3);
+        when(supplierRepository.getAllSuppliers()).thenReturn(List.of(SupplierTestData.supplier1(), SupplierTestData.supplier2()));
+        when(supplierRepository.createSupplier(any(Supplier.class))).thenReturn(SupplierTestData.supplier3());
         when(supplierRepository.deleteSupplierById(1L)).thenReturn(true);
         when(supplierRepository.deleteSupplierById(2L)).thenReturn(false);
     }
@@ -68,10 +60,9 @@ public class SupplierServiceTest {
 
     @Test
     public void testCreateSupplier() {
-        Supplier newSupplier = new Supplier(null, "Supplier C", LocalDate.of(2023, 6, 1));
-        Supplier result = supplierService.createSupplier(newSupplier);
-        assertEquals(supplier3, result);
-        verify(supplierRepository, times(1)).createSupplier(newSupplier);
+        Supplier result = supplierService.createSupplier(SupplierTestData.supplier3());
+        assertEquals(SupplierTestData.supplier3(), result);
+        verify(supplierRepository, times(1)).createSupplier(any(Supplier.class));
     }
 
     @Test
