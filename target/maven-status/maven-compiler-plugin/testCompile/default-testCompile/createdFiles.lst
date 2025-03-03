@@ -1,0 +1,8 @@
+org\supplier\interfaces\SupplierControllerTest.class
+org\supplier\GreetingResourceTest.class
+org\supplier\testData\SupplierTestData.class
+org\supplier\GreetingResourceIT.class
+META-INF\panache-archive.marker
+org\supplier\interfaces\exception\SupplierExceptionTest.class
+org\supplier\domain\SupplierServiceTest.class
+org\supplier\infrastructure\SupplierRepositoryTest.class

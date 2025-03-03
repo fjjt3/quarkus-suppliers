@@ -1,6 +1,9 @@
+org\supplier\interfaces\exception\SupplierExceptionHandler.class
+org\supplier\interfaces\exception\SupplierNotFoundException.class
 org\supplier\infrastructure\entity\Supplier.class
+org\supplier\interfaces\SupplierController.class
+org\supplier\interfaces\exception\ErrorResponse.class
+org\supplier\infrastructure\SupplierRepository.class
 META-INF\panache-archive.marker
 org\supplier\domain\SupplierService.class
 org\supplier\GreetingResource.class
-org\supplier\interfaces\SupplierController.class
-org\supplier\infrastructure\SupplierRepository.class
