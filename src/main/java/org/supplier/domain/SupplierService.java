@@ -1,5 +1,6 @@
 package org.supplier.domain;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.supplier.infrastructure.SupplierRepository;
 import org.supplier.infrastructure.entity.Supplier;
@@ -36,6 +37,11 @@ public class SupplierService {
 
     @Transactional
     public Supplier updateSupplier(Supplier supplier) {
-        return supplierRepository.updateSupplier(supplier);
+        Supplier existing = supplierRepository.findById(supplier.getId());
+        if (existing == null) {
+            throw new EntityNotFoundException("Supplier not found with id: " + supplier.getId());
+        }
+        return supplierRepository.getEntityManager().merge(supplier);
     }
+
 }
